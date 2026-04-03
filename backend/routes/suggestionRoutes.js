@@ -8,18 +8,27 @@ const path = require('path');
 const fs = require('fs');
 
 const uploadDir = path.join(__dirname, '../uploads');
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
+const isVercel = process.env.VERCEL === '1';
+
+if (!isVercel && !fs.existsSync(uploadDir)) {
+    try {
+        fs.mkdirSync(uploadDir, { recursive: true });
+    } catch (err) {
+        console.warn('Could not create uploads directory:', err.message);
+    }
 }
 
-const storage = multer.diskStorage({
-    destination(req, file, cb) {
-        cb(null, 'uploads/');
-    },
-    filename(req, file, cb) {
-        cb(null, `${Date.now()}-${file.originalname}`);
-    }
-});
+// Use memory storage on Vercel, disk storage locally
+const storage = isVercel 
+    ? multer.memoryStorage()
+    : multer.diskStorage({
+        destination(req, file, cb) {
+            cb(null, 'uploads/');
+        },
+        filename(req, file, cb) {
+            cb(null, `${Date.now()}-${file.originalname}`);
+        }
+    });
 
 const upload = multer({
     storage,
@@ -33,7 +42,13 @@ router.post('/', protect, upload.single('attachment'), async (req, res) => {
         
         let attachmentUrl = null;
         if (req.file) {
-            attachmentUrl = `/${req.file.path.replace(/\\\\/g, '/').replace(/\\/g, '/')}`;
+            if (isVercel) {
+                // On Vercel, we don't have a persistent local path.
+                // For now, we set a placeholder or skip until Cloudinary is integrated.
+                attachmentUrl = null; 
+            } else {
+                attachmentUrl = `/${req.file.path.replace(/\\\\/g, '/').replace(/\\/g, '/')}`;
+            }
         }
 
         const newSuggestion = new Suggestion({
