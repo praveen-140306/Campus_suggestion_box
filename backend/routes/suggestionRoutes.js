@@ -6,10 +6,13 @@ const { protect, admin } = require('../middleware/authMiddleware');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
 const uploadDir = path.join(__dirname, '../uploads');
 const isVercel = process.env.VERCEL === '1';
 
+// Only create local uploads folder if NOT on Vercel
 if (!isVercel && !fs.existsSync(uploadDir)) {
     try {
         fs.mkdirSync(uploadDir, { recursive: true });
@@ -18,10 +21,29 @@ if (!isVercel && !fs.existsSync(uploadDir)) {
     }
 }
 
-// Use memory storage on Vercel, disk storage locally
-const storage = isVercel 
-    ? multer.memoryStorage()
-    : multer.diskStorage({
+// Cloudinary Configuration
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+// Configure Storage Engine
+let storage;
+
+if (process.env.CLOUDINARY_CLOUD_NAME) {
+    // UPLOAD TO CLOUDINARY
+    storage = new CloudinaryStorage({
+        cloudinary: cloudinary,
+        params: {
+            folder: 'campus_suggestions',
+            allowed_formats: ['jpg', 'png', 'jpeg', 'pdf'],
+        },
+    });
+    console.log('Using Cloudinary for uploads');
+} else {
+    // FALLBACK TO LOCAL STORAGE
+    storage = multer.diskStorage({
         destination(req, file, cb) {
             cb(null, 'uploads/');
         },
@@ -29,6 +51,8 @@ const storage = isVercel
             cb(null, `${Date.now()}-${file.originalname}`);
         }
     });
+    console.log('Using local disk for uploads');
+}
 
 const upload = multer({
     storage,
@@ -42,10 +66,10 @@ router.post('/', protect, upload.single('attachment'), async (req, res) => {
         
         let attachmentUrl = null;
         if (req.file) {
-            if (isVercel) {
-                // On Vercel, we don't have a persistent local path.
-                // For now, we set a placeholder or skip until Cloudinary is integrated.
-                attachmentUrl = null; 
+            // Cloudinary returns the full URL in .path or .secure_url
+            // Local multer returns the local relative path in .path
+            if (process.env.CLOUDINARY_CLOUD_NAME) {
+                attachmentUrl = req.file.path; // This will be the Cloudinary URL
             } else {
                 attachmentUrl = `/${req.file.path.replace(/\\\\/g, '/').replace(/\\/g, '/')}`;
             }
