@@ -6,6 +6,10 @@ import HomeScreen from './screens/HomeScreen';
 import Admin from './components/Admin';
 import Navbar from './components/Navbar';
 import WelcomeScreen from './screens/WelcomeScreen';
+import ProtectedRoute from './components/ProtectedRoute';
+import MySuggestions from './screens/MySuggestions';
+import ProfileScreen from './screens/ProfileScreen';
+import AllSuggestions from './screens/AllSuggestions';
 
 // Layout component for authenticated/main pages
 const MainLayout = () => {
@@ -39,8 +43,18 @@ const App = () => {
 
                 {/* Main App Routes (with Layout) */}
                 <Route element={<MainLayout />}>
-                    <Route path="/home" element={<HomeScreen />} />
-                    <Route path="/admin" element={<Admin />} />
+                    {/* Protected User Routes */}
+                    <Route element={<ProtectedRoute />}>
+                        <Route path="/home" element={<HomeScreen />} />
+                        <Route path="/all-suggestions" element={<AllSuggestions />} />
+                        <Route path="/my-suggestions" element={<MySuggestions />} />
+                        <Route path="/profile" element={<ProfileScreen />} />
+                    </Route>
+
+                    {/* Protected Admin Routes */}
+                    <Route element={<ProtectedRoute role="admin" />}>
+                        <Route path="/admin" element={<Admin />} />
+                    </Route>
                 </Route>
 
                 {/* Fallback */}

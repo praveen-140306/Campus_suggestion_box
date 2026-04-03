@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { GoogleLogin } from '@react-oauth/google';
 
 const LoginScreen = ({ role: initialRole }) => {
     const [isLogin, setIsLogin] = useState(true);
@@ -45,6 +46,38 @@ const LoginScreen = ({ role: initialRole }) => {
         } catch (error) {
             console.error('Error:', error);
             alert('An error occurred. Please try again.');
+        }
+    };
+
+    const handleGoogleSuccess = async (credentialResponse) => {
+        try {
+            const response = await fetch('/api/auth/google', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    credential: credentialResponse.credential, 
+                    role 
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                console.log('Google Auth successful:', data);
+                localStorage.setItem('userInfo', JSON.stringify(data));
+                if (data.role === 'admin') {
+                    navigate('/admin');
+                } else {
+                    navigate('/home');
+                }
+            } else {
+                alert(data.message || 'Google Auth failed');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred during Google Auth.');
         }
     };
 
@@ -114,7 +147,7 @@ const LoginScreen = ({ role: initialRole }) => {
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
-                    <div className="flex flex-col items-center justify-between gap-4">
+                    <div className="flex flex-col items-center justify-between gap-4 border-b pb-4 mb-4 border-gray-200">
                         <button
                             className="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
                             type="submit"
@@ -130,6 +163,16 @@ const LoginScreen = ({ role: initialRole }) => {
                         </button>
                     </div>
                 </form>
+                <div className="flex flex-col items-center">
+                    <span className="text-gray-500 mb-4 block">Or continue with Google</span>
+                    <GoogleLogin
+                        onSuccess={handleGoogleSuccess}
+                        onError={() => {
+                            console.log('Login Failed');
+                            alert('Google Login Failed');
+                        }}
+                    />
+                </div>
             </div>
         </div>
     );

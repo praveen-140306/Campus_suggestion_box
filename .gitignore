@@ -28,3 +28,6 @@ dist-ssr
 
 # Vite cache
 .vite/
+
+# Backend uploads
+backend/uploads/
