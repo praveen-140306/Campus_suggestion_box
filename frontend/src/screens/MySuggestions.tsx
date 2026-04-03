@@ -105,9 +105,9 @@ const MySuggestions: React.FC = () => {
                     {suggestion.attachmentUrl && (
                       <div className="mt-2 border rounded-md overflow-hidden bg-gray-50 inline-block max-w-full">
                         {suggestion.attachmentUrl.match(/\.(jpeg|jpg|gif|png|webp)$/i) ? (
-                          <a href={`http://localhost:5000${suggestion.attachmentUrl}`} target="_blank" rel="noopener noreferrer">
+                          <a href={`${suggestion.attachmentUrl}`} target="_blank" rel="noopener noreferrer">
                             <img 
-                              src={`http://localhost:5000${suggestion.attachmentUrl}`} 
+                              src={`${suggestion.attachmentUrl}`} 
                               alt="Attached file" 
                               className="max-h-48 object-contain"
                             />
@@ -119,7 +119,7 @@ const MySuggestions: React.FC = () => {
                             </svg>
                             <div>
                                 <p className="text-sm font-medium text-gray-900">Attached Document</p>
-                                <a href={`http://localhost:5000${suggestion.attachmentUrl}`} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Download</a>
+                                <a href={`${suggestion.attachmentUrl}`} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Download</a>
                             </div>
                           </div>
                         )}

@@ -298,11 +298,11 @@ const Home: React.FC = () => {
                     {s.attachmentUrl && (
                       <div className="mt-3">
                         {s.attachmentUrl.match(/\.(jpeg|jpg|gif|png|webp)$/i) ? (
-                          <a href={`http://localhost:5000${s.attachmentUrl}`} target="_blank" rel="noopener noreferrer">
-                            <img src={`http://localhost:5000${s.attachmentUrl}`} alt="Attachment" className="max-h-48 rounded-lg border object-contain" />
+                          <a href={`${s.attachmentUrl}`} target="_blank" rel="noopener noreferrer">
+                            <img src={`${s.attachmentUrl}`} alt="Attachment" className="max-h-48 rounded-lg border object-contain" />
                           </a>
                         ) : (
-                          <a href={`http://localhost:5000${s.attachmentUrl}`} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-800 text-sm font-semibold flex items-center gap-1">
+                          <a href={`${s.attachmentUrl}`} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-800 text-sm font-semibold flex items-center gap-1">
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" /></svg>
                             View Attachment
                           </a>
