@@ -15,9 +15,9 @@ const app = express();
 
 // ✅ ADD THIS (fix COOP issue)
 app.use((req, res, next) => {
-    res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
-    res.setHeader("Cross-Origin-Embedder-Policy", "unsafe-none");
-    next();
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
+  res.setHeader("Cross-Origin-Embedder-Policy", "unsafe-none");
+  next();
 });
 
 // Middleware
@@ -30,18 +30,18 @@ app.use('/api/suggestions', suggestionRoutes);
 app.use('/api/auth', authRoutes);
 
 // ✅ BETTER Mongo connection (important for Vercel)
+
 let isConnected = false;
 
 const connectDB = async () => {
-    if (isConnected) return;
-
-    const db = await mongoose.connect(process.env.MONGO_URI);
-    isConnected = db.connections[0].readyState;
-    console.log('MongoDB Connected');
+  if (isConnected) return;
+  const db = await mongoose.connect(process.env.MONGO_URI);
+  isConnected = db.connections[0].readyState;
 };
+
 
 // ✅ EXPORT FUNCTION for Vercel (CRITICAL)
 module.exports = async (req, res) => {
-    await connectDB();
-    return app(req, res);
+  await connectDB();
+  return app(req, res);
 };
