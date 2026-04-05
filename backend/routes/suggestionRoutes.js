@@ -60,7 +60,15 @@ const upload = multer({
 });
 
 // POST /api/suggestions (Private)
-router.post('/', protect, upload.single('attachment'), async (req, res) => {
+router.post('/', protect, (req, res, next) => {
+    upload.single('attachment')(req, res, (err) => {
+        if (err) {
+            console.error('Multer/Cloudinary Error:', err);
+            return res.status(400).json({ error: 'File upload failed: ' + err.message });
+        }
+        next();
+    });
+}, async (req, res) => {
     try {
         const { name, category, message, visibility } = req.body;
         
@@ -86,6 +94,7 @@ router.post('/', protect, upload.single('attachment'), async (req, res) => {
         await newSuggestion.save();
         res.status(201).json(newSuggestion);
     } catch (err) {
+        console.error('Database Error:', err);
         res.status(400).json({ error: err.message });
     }
 });
