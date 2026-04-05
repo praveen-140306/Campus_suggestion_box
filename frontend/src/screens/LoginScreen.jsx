@@ -50,36 +50,44 @@ const LoginScreen = ({ role: initialRole }) => {
     };
 
     const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+        const response = await fetch('/api/auth/google', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                credential: credentialResponse.credential,
+                role
+            }),
+        });
+
+        let data = null;
+
         try {
-            const response = await fetch('/api/auth/google', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ 
-                    credential: credentialResponse.credential, 
-                    role 
-                }),
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                console.log('Google Auth successful:', data);
-                localStorage.setItem('userInfo', JSON.stringify(data));
-                if (data.role === 'admin') {
-                    navigate('/admin');
-                } else {
-                    navigate('/home');
-                }
-            } else {
-                alert(data.message || 'Google Auth failed');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('An error occurred during Google Auth.');
+            data = await response.json();
+        } catch (err) {
+            console.error("Invalid JSON response");
         }
-    };
+
+        if (response.ok) {
+            console.log('Google Auth successful:', data);
+            localStorage.setItem('userInfo', JSON.stringify(data));
+
+            if (data?.role === 'admin') {
+                navigate('/admin');
+            } else {
+                navigate('/home');
+            }
+        } else {
+            alert(data?.message || 'Google Auth failed');
+        }
+
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Server error. Please try again.');
+    }
+};
 
     return (
         <div className="flex items-center justify-center h-screen bg-gray-100">

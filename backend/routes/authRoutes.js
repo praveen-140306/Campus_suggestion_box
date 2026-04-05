@@ -82,32 +82,35 @@ router.post('/login', async (req, res) => {
 // @route   POST /api/auth/google
 // @access  Public
 router.post('/google', async (req, res) => {
-    const { credential, role } = req.body;
-
     try {
+        const { credential, role } = req.body;
+
+        if (!credential) {
+            return res.status(400).json({ message: "No credential provided" });
+        }
+
         const ticket = await client.verifyIdToken({
             idToken: credential,
-            audience: process.env.GOOGLE_CLIENT_ID || 'placeholder-client-id',
+            audience: process.env.GOOGLE_CLIENT_ID,
         });
-        
+
         const payload = ticket.getPayload();
-        const { sub, email, name } = payload; // sub is the googleId
+        const { sub, email, name } = payload;
 
         let user = await User.findOne({ email });
 
         if (user) {
-            // Check if role matches
             if (role && user.role !== role) {
-                return res.status(401).json({ message: `Access denied. You are not a ${role}.` });
+                return res.status(401).json({
+                    message: `Access denied. You are not a ${role}.`
+                });
             }
-            
-            // If user exists but doesn't have a googleId, update it
+
             if (!user.googleId) {
                 user.googleId = sub;
                 await user.save();
             }
         } else {
-            // Create new user
             user = await User.create({
                 name,
                 email,
@@ -116,16 +119,22 @@ router.post('/google', async (req, res) => {
             });
         }
 
-        res.json({
+        return res.status(200).json({
+            success: true,
             _id: user._id,
             name: user.name,
             email: user.email,
             role: user.role,
             token: generateToken(user._id),
         });
+
     } catch (error) {
         console.error('Google Auth Error:', error);
-        res.status(401).json({ message: 'Google authentication failed' });
+
+        return res.status(500).json({
+            success: false,
+            message: "Google authentication failed"
+        });
     }
 });
 
