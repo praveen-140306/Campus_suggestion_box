@@ -10,11 +10,9 @@ const LoginScreen = ({ role: initialRole }) => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
-    const API_URL = import.meta.env.MODE === 'development' ? '' : 'https://campus-suggestion-box-final.vercel.app';
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const endpoint = isLogin ? `${API_URL}/api/auth/login` : `${API_URL}/api/auth/register`;
+        const endpoint = isLogin ? `/api/auth/login` : `/api/auth/register`;
         const payload = { email, password, role };
         if (!isLogin) {
             payload.name = name;
@@ -53,7 +51,7 @@ const LoginScreen = ({ role: initialRole }) => {
 
     const handleGoogleSuccess = async (credentialResponse) => {
     try {
-        const response = await fetch(`${API_URL}/api/auth/google`, {
+        const response = await fetch(`/api/auth/google`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
