@@ -51,7 +51,7 @@ const LoginScreen = ({ role: initialRole }) => {
 
     const handleGoogleSuccess = async (credentialResponse) => {
     try {
-        const response = await fetch('https://campus-suggestion-box-final.vercel.app/api/auth/google', {
+        const response = await fetch('/api/auth/google', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

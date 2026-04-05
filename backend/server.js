@@ -40,8 +40,18 @@ const connectDB = async () => {
 };
 
 
-// ✅ EXPORT FUNCTION for Vercel (CRITICAL)
-module.exports = async (req, res) => {
-  await connectDB();
-  return app(req, res);
-};
+if (require.main === module) {
+  // Run locally on `npm start`
+  connectDB().then(() => {
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  });
+} else {
+  // Export for Vercel Serverless
+  module.exports = async (req, res) => {
+    await connectDB();
+    return app(req, res);
+  };
+}
