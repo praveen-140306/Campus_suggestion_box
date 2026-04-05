@@ -1,14 +1,24 @@
 const path = require('path');
+
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 }
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+
 const suggestionRoutes = require('./routes/suggestionRoutes');
 const authRoutes = require('./routes/authRoutes');
 
 const app = express();
+
+// ✅ ADD THIS (fix COOP issue)
+app.use((req, res, next) => {
+    res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
+    res.setHeader("Cross-Origin-Embedder-Policy", "unsafe-none");
+    next();
+});
 
 // Middleware
 app.use(cors());
@@ -19,16 +29,19 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/suggestions', suggestionRoutes);
 app.use('/api/auth', authRoutes);
 
-// Database Connection
-mongoose.connect(process.env.MONGO_URI).then(() => {
-    console.log('MongoDB Connected');
-    // Only listen if not running on Vercel
-    if (process.env.NODE_ENV !== 'production') {
-        const PORT = process.env.PORT || 5000;
-        app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-    }
-}).catch(err => {
-    console.error('MongoDB Connection Error:', err);
-});
+// ✅ BETTER Mongo connection (important for Vercel)
+let isConnected = false;
 
-module.exports = app;
+const connectDB = async () => {
+    if (isConnected) return;
+
+    const db = await mongoose.connect(process.env.MONGO_URI);
+    isConnected = db.connections[0].readyState;
+    console.log('MongoDB Connected');
+};
+
+// ✅ EXPORT FUNCTION for Vercel (CRITICAL)
+module.exports = async (req, res) => {
+    await connectDB();
+    return app(req, res);
+};
