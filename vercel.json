@@ -6,8 +6,9 @@
       "framework": "vite"
     },
     "backend": {
-      "entrypoint": "backend/api",
-      "routePrefix": "/api"
+      "entrypoint": "backend/api/index.js",
+      "routePrefix": "/api",
+      "framework": "node"
     }
   }
-}   
+}
