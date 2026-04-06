@@ -99,7 +99,12 @@ export const addSuggestion = async (name: string, category: Category, message: s
     });
 
     if (!response.ok) {
-      throw new Error('Failed to add suggestion');
+      let errMsg = 'Failed to add suggestion';
+      try {
+        const errData = await response.json();
+        errMsg = errData?.details || errData?.error || errData?.message || errMsg;
+      } catch (_) {}
+      throw new Error(`Upload failed (${response.status}): ${errMsg}`);
     }
 
     return await response.json();

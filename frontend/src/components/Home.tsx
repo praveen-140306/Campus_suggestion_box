@@ -10,6 +10,7 @@ const Home: React.FC = () => {
   const [visibility, setVisibility] = useState<'public' | 'personal'>('public');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'submit' | 'feed'>('submit');
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(false);
@@ -45,6 +46,7 @@ const Home: React.FC = () => {
     if (!message.trim()) return;
 
     setIsSubmitting(true);
+    setSubmitError(null);
     try {
       await addSuggestion(name, category, message, attachment, visibility);
       setShowSuccess(true);
@@ -55,8 +57,9 @@ const Home: React.FC = () => {
       setVisibility('public');
 
       setTimeout(() => setShowSuccess(false), 5000);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error submitting suggestion:', error);
+      setSubmitError(error?.message || 'Submission failed. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -139,6 +142,15 @@ const Home: React.FC = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
             </svg>
             <span className="text-green-800 font-medium text-sm">Thank you! Your suggestion has been submitted successfully.</span>
+          </div>
+        )}
+
+        {submitError && (
+          <div className="mb-8 p-4 bg-red-50 border border-red-200 rounded-md flex items-start">
+            <svg className="h-5 w-5 text-red-600 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span className="text-red-800 font-medium text-sm">{submitError}</span>
           </div>
         )}
 
