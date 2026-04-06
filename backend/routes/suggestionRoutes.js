@@ -59,12 +59,26 @@ const upload = multer({
     limits: { fileSize: 5000000 },
 });
 
+// Middleware to log upload attempt
+const logUpload = (req, res, next) => {
+    console.log('--- File Upload Attempt ---');
+    console.log('Cloudinary Configured:', !!process.env.CLOUDINARY_CLOUD_NAME);
+    next();
+};
+
 // POST /api/suggestions (Private)
-router.post('/', protect, (req, res, next) => {
+router.post('/', protect, logUpload, (req, res, next) => {
     upload.single('attachment')(req, res, (err) => {
         if (err) {
             console.error('Multer/Cloudinary Error:', err);
-            return res.status(400).json({ error: 'File upload failed: ' + err.message });
+            return res.status(400).json({ 
+                error: 'File upload failed', 
+                details: err.message,
+                storageType: process.env.CLOUDINARY_CLOUD_NAME ? 'Cloudinary' : 'Local'
+            });
+        }
+        if (req.file) {
+            console.log('File uploaded successfully:', req.file.path);
         }
         next();
     });

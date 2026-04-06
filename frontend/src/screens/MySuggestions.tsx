@@ -105,11 +105,15 @@ const MySuggestions: React.FC = () => {
                     {suggestion.attachmentUrl && (
                       <div className="mt-2 border rounded-md overflow-hidden bg-gray-50 inline-block max-w-full">
                         {suggestion.attachmentUrl.match(/\.(jpeg|jpg|gif|png|webp)$/i) ? (
-                          <a href={suggestion.attachmentUrl.startsWith('http') ? suggestion.attachmentUrl : `${suggestion.attachmentUrl}`} target="_blank" rel="noopener noreferrer">
+                          <a href={suggestion.attachmentUrl} target="_blank" rel="noopener noreferrer">
                             <img 
-                              src={suggestion.attachmentUrl.startsWith('http') ? suggestion.attachmentUrl : `${suggestion.attachmentUrl}`} 
+                              src={suggestion.attachmentUrl} 
                               alt="Attached file" 
-                              className="max-h-48 object-contain"
+                              className="max-h-48 w-full object-contain bg-gray-100"
+                              onError={(e) => {
+                                // If image fails to load (likely old local upload on Vercel), hide it
+                                (e.target as HTMLImageElement).style.display = 'none';
+                              }}
                             />
                           </a>
                         ) : (
