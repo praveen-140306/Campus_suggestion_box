@@ -29,16 +29,34 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/suggestions', suggestionRoutes);
 app.use('/api/auth', authRoutes);
 
-// ✅ BETTER Mongo connection (important for Vercel)
+// Define a simple health check route
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    message: 'Backend is running correctly',
+    timestamp: new Date().toISOString()
+  });
+});
 
-let isConnected = false;
+// ✅ BETTER Mongo connection (important for Vercel)
+let cachedDb = null;
 
 const connectDB = async () => {
-  if (isConnected) return;
-  const db = await mongoose.connect(process.env.MONGO_URI);
-  isConnected = db.connections[0].readyState;
-};
+  if (cachedDb) return;
+  
+  if (!process.env.MONGO_URI) {
+    throw new Error("MONGO_URI is missing from environment variables.");
+  }
 
+  try {
+    const conn = await mongoose.connect(process.env.MONGO_URI);
+    cachedDb = conn.connection;
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.error(`MongoDB Connection Error: ${error.message}`);
+    throw error;
+  }
+};
 
 if (require.main === module) {
   // Run locally on `npm start`
@@ -47,11 +65,22 @@ if (require.main === module) {
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
+  }).catch(err => {
+    console.error("Local Server Start Error:", err);
   });
 } else {
-  // Export for Vercel Serverless
+  // Export for Vercel Serverless (With Error Reporting)
   module.exports = async (req, res) => {
-    await connectDB();
-    return app(req, res);
+    try {
+      await connectDB();
+      return app(req, res);
+    } catch (err) {
+      console.error("Vercel Serverless Error:", err.message);
+      res.status(500).json({ 
+        success: false, 
+        message: "Server failed to connect to database.",
+        error: err.message 
+      });
+    }
   };
 }

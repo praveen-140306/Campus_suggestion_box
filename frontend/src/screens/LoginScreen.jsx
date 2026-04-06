@@ -41,11 +41,11 @@ const LoginScreen = ({ role: initialRole }) => {
                     navigate('/home');
                 }
             } else {
-                alert(data.message || 'Authentication failed');
+                alert(`Authentication failed (${response.status}): ${data?.message || 'Unknown error'}`);
             }
         } catch (error) {
             console.error('Error:', error);
-            alert('An error occurred. Please try again.');
+            alert(`An error occurred: ${error.message || 'Please try again.'}`);
         }
     };
 
@@ -80,12 +80,12 @@ const LoginScreen = ({ role: initialRole }) => {
                 navigate('/home');
             }
         } else {
-            alert(data?.message || 'Google Auth failed');
+            alert(`Google Auth failed (${response.status}): ${data?.message || 'Check database connection'}`);
         }
 
     } catch (error) {
-        console.error('Error:', error);
-        alert('Server error. Please try again.');
+        console.error('Google Auth Client Error:', error);
+        alert(`Google Auth Error: ${error.message || 'Server error. Please try again.'}`);
     }
 };
 
