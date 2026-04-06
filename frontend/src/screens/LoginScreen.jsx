@@ -90,18 +90,22 @@ const LoginScreen = ({ role: initialRole }) => {
 };
 
     return (
-        <div className="flex items-center justify-center h-screen bg-gray-100">
-            <div className="p-8 bg-white rounded shadow-md w-96">
+        <div className="min-h-screen flex items-center justify-center bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+            {/* Background Decorative Elements */}
+            <div className="absolute top-[-10%] left-[-10%] w-64 h-64 bg-indigo-200/40 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-[-10%] right-[-10%] w-64 h-64 bg-teal-200/40 rounded-full blur-3xl"></div>
+
+            <div className="max-w-md w-full space-y-8 bg-white p-8 sm:p-10 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-100 relative z-10">
                 {!initialRole && (
-                    <div className="flex mb-6 border-b">
+                    <div className="flex p-1 bg-slate-100 rounded-2xl mb-8">
                         <button
-                            className={`w-1/2 py-2 text-center font-semibold ${role === 'student' ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500'}`}
+                            className={`flex-1 py-2.5 text-sm font-bold rounded-xl transition-all duration-200 ${role === 'student' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
                             onClick={() => setRole('student')}
                         >
                             Student
                         </button>
                         <button
-                            className={`w-1/2 py-2 text-center font-semibold ${role === 'admin' ? 'border-b-2 border-blue-500 text-blue-500' : 'text-gray-500'}`}
+                            className={`flex-1 py-2.5 text-sm font-bold rounded-xl transition-all duration-200 ${role === 'admin' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
                             onClick={() => setRole('admin')}
                         >
                             Admin
@@ -109,76 +113,102 @@ const LoginScreen = ({ role: initialRole }) => {
                     </div>
                 )}
 
-                <h2 className="mb-4 text-2xl font-bold text-center">
-                    {role === 'student' ? 'Student' : 'Admin'} {isLogin ? 'Login' : 'Sign Up'}
-                </h2>
+                <div className="text-center">
+                    <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+                        {role === 'student' ? 'Student' : 'Admin'} {isLogin ? 'Login' : 'Sign Up'}
+                    </h2>
+                    <p className="mt-2 text-sm text-slate-500">
+                        {isLogin ? 'Welcome back! Please enter your details.' : 'Create an account to start suggesting.'}
+                    </p>
+                </div>
 
-                <form onSubmit={handleSubmit}>
-                    {!isLogin && (
-                        <div className="mb-4">
-                            <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="name">
-                                Name
+                <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+                    <div className="space-y-4">
+                        {!isLogin && (
+                            <div>
+                                <label className="block text-sm font-bold text-slate-700 mb-1" htmlFor="name">
+                                    Full Name
+                                </label>
+                                <input
+                                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none text-slate-900 placeholder-slate-400"
+                                    id="name"
+                                    type="text"
+                                    placeholder="Enter your name"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    required={!isLogin}
+                                />
+                            </div>
+                        )}
+                        <div>
+                            <label className="block text-sm font-bold text-slate-700 mb-1" htmlFor="email">
+                                Email Address
                             </label>
                             <input
-                                className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                                id="name"
-                                type="text"
-                                placeholder="Name"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
+                                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none text-slate-900 placeholder-slate-400"
+                                id="email"
+                                type="email"
+                                placeholder="name@college.edu"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
                             />
                         </div>
-                    )}
-                    <div className="mb-4">
-                        <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="email">
-                            Email
-                        </label>
-                        <input
-                            className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                            id="email"
-                            type="email"
-                            placeholder="Email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
+                        <div>
+                            <label className="block text-sm font-bold text-slate-700 mb-1" htmlFor="password">
+                                Password
+                            </label>
+                            <input
+                                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none text-slate-900 placeholder-slate-400"
+                                id="password"
+                                type="password"
+                                placeholder="••••••••"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
                     </div>
-                    <div className="mb-6">
-                        <label className="block mb-2 text-sm font-bold text-gray-700" htmlFor="password">
-                            Password
-                        </label>
-                        <input
-                            className="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                            id="password"
-                            type="password"
-                            placeholder="******************"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-                    </div>
-                    <div className="flex flex-col items-center justify-between gap-4 border-b pb-4 mb-4 border-gray-200">
+
+                    <div className="space-y-4 pt-2">
                         <button
-                            className="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+                            className="w-full py-3.5 px-4 font-bold text-white bg-indigo-600 rounded-xl hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-500/20 active:scale-[0.98] transition-all shadow-lg shadow-indigo-200"
                             type="submit"
                         >
-                            {isLogin ? 'Sign In' : 'Sign Up'}
+                            {isLogin ? 'Sign In' : 'Create Account'}
                         </button>
-                        <button
-                            type="button"
-                            className="text-sm text-blue-500 hover:text-blue-800"
-                            onClick={() => setIsLogin(!isLogin)}
-                        >
-                            {isLogin ? 'Need an account? Sign Up' : 'Already have an account? Login'}
-                        </button>
+                        
+                        <div className="text-center">
+                            <button
+                                type="button"
+                                className="text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition-colors"
+                                onClick={() => setIsLogin(!isLogin)}
+                            >
+                                {isLogin ? "Don't have an account? Sign Up" : 'Already have an account? Login'}
+                            </button>
+                        </div>
                     </div>
                 </form>
-                <div className="flex flex-col items-center">
-                    <span className="text-gray-500 mb-4 block">Or continue with Google</span>
+
+                <div className="mt-8 relative">
+                    <div className="absolute inset-0 flex items-center">
+                        <div className="w-full border-t border-slate-200"></div>
+                    </div>
+                    <div className="relative flex justify-center text-sm">
+                        <span className="px-4 bg-white text-slate-500 font-medium">Or continue with</span>
+                    </div>
+                </div>
+
+                <div className="mt-6 flex justify-center">
                     <GoogleLogin
                         onSuccess={handleGoogleSuccess}
                         onError={() => {
                             console.log('Login Failed');
                             alert('Google Login Failed');
                         }}
+                        theme="outline"
+                        shape="pill"
+                        width="100%"
                     />
                 </div>
             </div>

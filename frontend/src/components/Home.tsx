@@ -90,22 +90,22 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto pt-10 pb-20">
-      <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-gray-900 tracking-tight">
+    <div className="max-w-4xl mx-auto px-4 pt-8 pb-20">
+      <div className="text-center mb-10">
+        <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
           Campus Suggestion Box
         </h1>
-        <p className="mt-3 text-lg text-gray-500">
-          Share your feedback to help improve our college experience.
+        <p className="mt-4 text-base md:text-lg text-slate-500 max-w-2xl mx-auto">
+          Share your feedback to help improve our college experience. Your voice matters.
         </p>
       </div>
 
       {/* Tab Navigation */}
-      <div className="flex items-center justify-center mb-8">
-        <div className="inline-flex bg-slate-100 rounded-2xl p-1.5 gap-1">
+      <div className="flex items-center justify-center mb-10">
+        <div className="inline-flex bg-slate-100 rounded-2xl p-1.5 gap-1.5 w-full sm:w-auto overflow-x-auto no-scrollbar">
           <button
             onClick={() => setActiveTab('submit')}
-            className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 flex items-center gap-2 ${
+            className={`flex-1 sm:flex-none px-4 sm:px-8 py-3 rounded-xl text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2 whitespace-nowrap ${
               activeTab === 'submit'
                 ? 'bg-white text-indigo-700 shadow-md shadow-slate-200'
                 : 'text-slate-500 hover:text-slate-700'
@@ -118,7 +118,7 @@ const Home: React.FC = () => {
           </button>
           <button
             onClick={() => setActiveTab('feed')}
-            className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 flex items-center gap-2 ${
+            className={`flex-1 sm:flex-none px-4 sm:px-8 py-3 rounded-xl text-sm font-bold transition-all duration-200 flex items-center justify-center gap-2 whitespace-nowrap ${
               activeTab === 'feed'
                 ? 'bg-white text-indigo-700 shadow-md shadow-slate-200'
                 : 'text-slate-500 hover:text-slate-700'

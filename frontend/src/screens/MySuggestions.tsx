@@ -51,17 +51,17 @@ const MySuggestions: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto pt-8 pb-20">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
+    <div className="max-w-4xl mx-auto px-4 pt-8 pb-20">
+      <div className="mb-10">
+        <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
           My Suggestions
         </h1>
-        <p className="mt-2 text-gray-500">
+        <p className="mt-3 text-base md:text-lg text-slate-500">
           Track the status of the feedback you've submitted.
         </p>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden min-h-[400px]">
+      <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-200 overflow-hidden min-h-[400px]">
         {isLoading ? (
           <div className="flex justify-center items-center h-64">
             <div className="animate-spin h-8 w-8 border-2 border-indigo-600 border-t-transparent rounded-full"></div>

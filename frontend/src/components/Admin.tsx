@@ -77,10 +77,10 @@ const Admin: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10 space-y-10">
-        <div className="flex justify-between items-end pb-2">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-2">
           <div>
-            <h1 className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-teal-500 tracking-tight drop-shadow-sm">Admin Dashboard</h1>
-            <p className="text-slate-600 font-medium text-lg mt-2">Overview of student feedback and metrics</p>
+            <h1 className="text-3xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-700 to-teal-500 tracking-tight drop-shadow-sm">Admin Dashboard</h1>
+            <p className="text-slate-600 font-medium text-sm md:text-lg mt-2">Overview of student feedback and metrics</p>
           </div>
         </div>
 
@@ -126,12 +126,12 @@ const Admin: React.FC = () => {
         </div>
 
         {/* Visibility Filter Tabs */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2">
           {(['all', 'public', 'personal'] as const).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`px-5 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-200 ${
+              className={`px-5 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-200 whitespace-nowrap ${
                 activeTab === tab
                   ? tab === 'personal'
                     ? 'bg-rose-600 text-white shadow-lg shadow-rose-200'
@@ -157,6 +157,15 @@ const Admin: React.FC = () => {
         </div>
 
         <div className="bg-white/80 backdrop-blur-2xl rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.05)] border border-white overflow-hidden">
+          <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between">
+            <h2 className="text-xl font-bold text-slate-800">Recent Suggestions</h2>
+            <div className="lg:hidden animate-pulse flex items-center gap-2 text-xs font-bold text-indigo-500 uppercase tracking-widest">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+              Scroll Right
+            </div>
+          </div>
         {isLoading ? (
           <div className="p-12 text-center">
             <div className="animate-spin h-8 w-8 border-2 border-indigo-600 border-t-transparent rounded-full mx-auto"></div>
@@ -167,8 +176,8 @@ const Admin: React.FC = () => {
             <p className="text-gray-400 font-medium">No suggestions found.</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+          <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
+            <table className="w-full text-left border-collapse min-w-[1000px]">
               <thead className="bg-slate-50/50 border-b border-slate-200">
                 <tr>
                   <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest whitespace-nowrap">Student</th>

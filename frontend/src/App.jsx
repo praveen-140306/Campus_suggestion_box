@@ -14,13 +14,17 @@ import AllSuggestions from './screens/AllSuggestions';
 // Layout component for authenticated/main pages
 const MainLayout = () => {
     return (
-        <div className="min-h-screen flex flex-col bg-gray-50">
+        <div className="min-h-screen flex flex-col bg-slate-50">
             <Navbar />
-            <main className="flex-grow container mx-auto px-4 py-8">
+            <main className="flex-grow">
                 <Outlet />
             </main>
-            <footer className="bg-white border-t border-gray-200 py-6 text-center text-gray-500 text-sm">
-                <p>© {new Date().getFullYear()} Campus Suggestion Box. All Rights Reserved.</p>
+            <footer className="bg-white border-t border-slate-200 py-10 text-center relative z-20">
+                <div className="max-w-4xl mx-auto px-4">
+                    <p className="text-slate-400 text-sm font-medium">
+                        © {new Date().getFullYear()} <span className="text-indigo-600 font-bold">CampusBox</span>. Built for the community.
+                    </p>
+                </div>
             </footer>
         </div>
     );
