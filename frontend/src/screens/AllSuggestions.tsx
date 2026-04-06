@@ -54,11 +54,11 @@ const AllSuggestions: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 pt-8 pb-20">
-      <div className="mb-10">
-        <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
+      <div className="text-center mb-10 sm:mb-16">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-indigo-800 tracking-tight leading-tight">
           All Public Suggestions
         </h1>
-        <p className="mt-3 text-base md:text-lg text-slate-500">
+        <p className="mt-4 text-sm sm:text-base md:text-lg text-slate-500 max-w-2xl mx-auto px-6">
           Browse suggestions from other students and upvote the ones you agree with.
         </p>
       </div>
@@ -77,12 +77,12 @@ const AllSuggestions: React.FC = () => {
             <p className="mt-1 text-gray-500">Be the first to share your thoughts on the campus box!</p>
           </div>
         ) : (
-          <div className="divide-y divide-gray-200">
+          <div className="divide-y divide-slate-100">
             {suggestions.map((suggestion) => (
-              <div key={suggestion._id} className="p-6 transition-colors hover:bg-gray-50 flex flex-col gap-4">
+              <div key={suggestion._id} className="p-6 transition-colors hover:bg-slate-50/50 flex flex-col gap-4">
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                   <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2 flex-wrap">
+                    <div className="flex items-center gap-2 mb-3 flex-wrap">
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                         suggestion.category === 'Academics' ? 'bg-blue-100 text-blue-800' :
                         suggestion.category === 'Facilities' ? 'bg-green-100 text-green-800' :

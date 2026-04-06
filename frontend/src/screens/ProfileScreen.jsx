@@ -95,11 +95,11 @@ const ProfileScreen = () => {
             </div>
 
             <div className="max-w-6xl mx-auto relative z-10">
-                <div className="text-center mb-12 sm:mb-16">
-                    <h1 className="text-3xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 via-indigo-600 to-indigo-500 tracking-tight mb-4 drop-shadow-sm">
+                <div className="text-center mb-10 sm:mb-16">
+                    <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 via-indigo-600 to-indigo-500 tracking-tight mb-4 drop-shadow-sm px-2">
                         {userInfo.role === 'admin' ? 'Admin Workspace' : 'Student Hub'}
                     </h1>
-                    <p className="text-slate-600 font-medium text-base md:text-lg max-w-2xl mx-auto px-4">
+                    <p className="text-slate-600 font-medium text-sm sm:text-base md:text-lg max-w-2xl mx-auto px-6">
                         Overview of your profile and recent activity across the platform.
                     </p>
                 </div>
@@ -115,7 +115,7 @@ const ProfileScreen = () => {
                             <div className="relative w-28 h-28 sm:w-36 sm:h-36 mb-6 mt-4">
                                 <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500 to-indigo-400 rounded-full animate-[spin_8s_linear_infinite] opacity-30 blur-lg group-hover:opacity-60 transition-opacity duration-500"></div>
                                 <div className="relative w-full h-full rounded-full bg-gradient-to-tr from-indigo-600 to-indigo-500 p-1 flex items-center justify-center shadow-xl">
-                                    <div className="w-full h-full bg-white rounded-full flex items-center justify-center text-4xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-indigo-600 to-indigo-500">
+                                    <div className="w-full h-full bg-white rounded-full flex items-center justify-center text-5xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-indigo-600 to-indigo-500">
                                         {userInfo.name ? userInfo.name.charAt(0).toUpperCase() : 'U'}
                                     </div>
                                 </div>

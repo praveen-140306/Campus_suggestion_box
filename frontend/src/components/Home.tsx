@@ -134,7 +134,7 @@ const Home: React.FC = () => {
 
       {/* Submit Tab */}
       {activeTab === 'submit' && (
-      <div className="bg-white p-8 rounded-lg shadow-sm border border-gray-200">
+      <div className="bg-white p-6 sm:p-10 rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-200">
 
         {showSuccess && (
           <div className="mb-8 p-4 bg-green-50 border border-green-200 rounded-md flex items-center">
@@ -200,20 +200,28 @@ const Home: React.FC = () => {
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Attachment <span className="text-gray-400 font-normal">(Optional File or Image)</span>
-            </label>
-            <input
-              type="file"
-              onChange={(e) => setAttachment(e.target.files ? e.target.files[0] : null)}
-              className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
-              accept="image/*,.pdf,.doc,.docx"
-            />
-            {attachment && (
-                <p className="mt-2 text-sm text-gray-500">Selected file: {attachment.name}</p>
-            )}
-          </div>
+            <div className="relative group">
+              <input
+                type="file"
+                id="file-upload"
+                onChange={(e) => setAttachment(e.target.files ? e.target.files[0] : null)}
+                className="hidden"
+                accept="image/*,.pdf,.doc,.docx"
+              />
+              <label 
+                htmlFor="file-upload"
+                className="flex items-center justify-center w-full px-4 py-4 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl cursor-pointer hover:bg-slate-100 hover:border-indigo-300 transition-all group"
+              >
+                <div className="flex flex-col items-center gap-2">
+                  <svg className="w-8 h-8 text-slate-400 group-hover:text-indigo-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                  </svg>
+                  <span className="text-sm font-semibold text-slate-600 group-hover:text-indigo-600">
+                    {attachment ? attachment.name : 'Tap to upload image or file'}
+                  </span>
+                </div>
+              </label>
+            </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -241,24 +249,31 @@ const Home: React.FC = () => {
             </div>
           </div>
 
-          <div className="pt-2">
+          <div className="pt-4">
             <button
               type="submit"
               disabled={isSubmitting}
-              className={`w-full py-2.5 px-4 rounded-md text-white font-medium shadow-sm transition-colors flex justify-center items-center ${isSubmitting
+              className={`w-full py-4 px-6 rounded-[1.25rem] text-white font-bold shadow-xl shadow-indigo-200 transition-all active:scale-95 flex justify-center items-center gap-3 ${isSubmitting
                   ? 'bg-indigo-400 cursor-not-allowed'
-                  : 'bg-indigo-600 hover:bg-indigo-700'
+                  : 'bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800'
                 }`}
             >
               {isSubmitting ? (
                 <>
-                  <svg className="animate-spin h-4 w-4 mr-2 text-white" viewBox="0 0 24 24">
+                  <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                   </svg>
                   Processing...
                 </>
-              ) : 'Submit Suggestion'}
+              ) : (
+                <>
+                  Submit Suggestion
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                  </svg>
+                </>
+              )}
             </button>
           </div>
         </form>

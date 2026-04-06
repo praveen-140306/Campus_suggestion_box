@@ -156,140 +156,197 @@ const Admin: React.FC = () => {
           ))}
         </div>
 
-        <div className="bg-white/80 backdrop-blur-2xl rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.05)] border border-white overflow-hidden">
-          <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between">
+        <div className="bg-white/80 backdrop-blur-2xl rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.05)] border border-white overflow-hidden">
+          <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between">
             <h2 className="text-xl font-bold text-slate-800">Recent Suggestions</h2>
-            <div className="lg:hidden animate-pulse flex items-center gap-2 text-xs font-bold text-indigo-500 uppercase tracking-widest">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-              Scroll Right
+            <div className="lg:hidden animate-bounce flex items-center gap-2 text-[10px] font-black text-indigo-500 uppercase tracking-widest">
+              Mobile Card View 
             </div>
           </div>
         {isLoading ? (
-          <div className="p-12 text-center">
-            <div className="animate-spin h-8 w-8 border-2 border-indigo-600 border-t-transparent rounded-full mx-auto"></div>
-            <p className="mt-3 text-gray-500 text-sm">Loading data...</p>
-          </div>
-        ) : suggestions.length === 0 ? (
           <div className="p-16 text-center">
-            <p className="text-gray-400 font-medium">No suggestions found.</p>
+            <div className="animate-spin h-10 w-10 border-4 border-indigo-600 border-t-transparent rounded-full mx-auto"></div>
+            <p className="mt-4 text-slate-500 font-bold uppercase tracking-widest text-[10px]">Syncing Data...</p>
           </div>
         ) : (
-          <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
-            <table className="w-full text-left border-collapse min-w-[1000px]">
-              <thead className="bg-slate-50/50 border-b border-slate-200">
-                <tr>
-                  <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest whitespace-nowrap">Student</th>
-                  <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest whitespace-nowrap">Category</th>
-                  <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest whitespace-nowrap">Message</th>
-                  <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest whitespace-nowrap text-center">Upvotes</th>
-                  <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest whitespace-nowrap">Status</th>
-                  <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest whitespace-nowrap">Admin Reply</th>
-                  <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest whitespace-nowrap">Date</th>
-                  <th className="px-6 py-5 text-xs font-bold text-slate-500 uppercase tracking-widest text-right whitespace-nowrap">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {suggestions
-                  .filter(s =>
-                    activeTab === 'all'
-                      ? true
-                      : activeTab === 'personal'
-                        ? s.visibility === 'personal'
-                        : s.visibility !== 'personal'
-                  )
-                  .map((s) => (
-                  <tr key={s._id} className="hover:bg-slate-50/80 transition-colors group">
-                    <td className="px-6 py-5 whitespace-nowrap text-sm font-bold text-slate-800">
-                      {s.name || <span className="text-slate-400 italic font-medium">Anonymous</span>}
-                    </td>
-                    <td className="px-6 py-5 whitespace-nowrap">
-                      <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${s.category === 'Academics' ? 'bg-blue-100 text-blue-800 border border-blue-200' :
-                        s.category === 'Facilities' ? 'bg-green-100 text-green-800 border border-green-200' :
-                          s.category === 'Events' ? 'bg-purple-100 text-purple-800 border border-purple-200' :
-                            'bg-slate-100 text-slate-800 border border-slate-200'
-                        }`}>
-                        {s.category}
-                      </span>
-                      {s.visibility && (
-                        <span className={`ml-1 inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-widest ${
-                          s.visibility === 'public' ? 'bg-indigo-50 text-indigo-700 border border-indigo-100' : 'bg-rose-50 text-rose-700 border border-rose-100'
-                        }`}>
-                          {s.visibility}
+          <>
+            {/* Desktop Table View */}
+            <div className="hidden lg:block overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead className="bg-slate-50/50 border-b border-slate-200">
+                  <tr>
+                    <th className="px-6 py-5 text-[10px] font-black text-slate-500 uppercase tracking-widest">Student</th>
+                    <th className="px-6 py-5 text-[10px] font-black text-slate-500 uppercase tracking-widest">Category</th>
+                    <th className="px-6 py-5 text-[10px] font-black text-slate-500 uppercase tracking-widest">Message</th>
+                    <th className="px-6 py-5 text-[10px] font-black text-slate-500 uppercase tracking-widest text-center">Engagement</th>
+                    <th className="px-6 py-5 text-[10px] font-black text-slate-500 uppercase tracking-widest">Status</th>
+                    <th className="px-6 py-5 text-[10px] font-black text-slate-500 uppercase tracking-widest">Action Required</th>
+                    <th className="px-6 py-5 text-[10px] font-black text-slate-500 uppercase tracking-widest text-right">Settings</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {suggestions
+                    .filter(s =>
+                      activeTab === 'all'
+                        ? true
+                        : activeTab === 'personal'
+                          ? s.visibility === 'personal'
+                          : s.visibility !== 'personal'
+                    )
+                    .map((s) => (
+                    <tr key={s._id} className="hover:bg-slate-50/80 transition-colors group">
+                      <td className="px-6 py-5 whitespace-nowrap text-sm font-bold text-slate-800">
+                        {s.name || <span className="text-slate-400 italic">Anonymous</span>}
+                      </td>
+                      <td className="px-6 py-5 whitespace-nowrap">
+                        <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${s.category === 'Academics' ? 'bg-blue-100 text-blue-800' :
+                          s.category === 'Facilities' ? 'bg-green-100 text-green-800' :
+                            s.category === 'Events' ? 'bg-purple-100 text-purple-800' :
+                              'bg-slate-100 text-slate-800'
+                          }`}>
+                          {s.category}
                         </span>
-                      )}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-gray-600 max-w-sm" title={s.message}>
-                      <div className="truncate">{s.message}</div>
-                      {s.attachmentUrl && (
-                         <div className="mt-2">
-                            <a href={s.attachmentUrl.startsWith('http') ? s.attachmentUrl : `${s.attachmentUrl}`} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-800 text-xs font-semibold flex items-center gap-1">
-                               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" /></svg>
-                               View Attachment
-                            </a>
-                         </div>
-                      )}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">
-                      <div className="flex items-center justify-center gap-1 text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-md border border-indigo-100 inline-flex">
-                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 15l7-7 7 7" />
-                        </svg>
-                        {(s.upvotes || []).length}
-                      </div>
-                    </td>
-                    <td className="px-6 py-5 whitespace-nowrap">
+                      </td>
+                      <td className="px-6 py-4 text-sm text-slate-600 max-w-sm">
+                        <div className="truncate font-medium">{s.message}</div>
+                        {s.attachmentUrl && (
+                           <div className="mt-2">
+                              <a href={s.attachmentUrl} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:text-indigo-800 text-xs font-bold flex items-center gap-1">
+                                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" /></svg>
+                                 Download Attachment
+                              </a>
+                           </div>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-center">
+                        <div className="bg-slate-100 rounded-lg px-2 py-1 inline-flex items-center gap-1 text-slate-600 font-bold text-xs">
+                          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" /></svg>
+                          {(s.upvotes || []).length}
+                        </div>
+                      </td>
+                      <td className="px-6 py-5 whitespace-nowrap">
+                        <select
+                          value={s.status || 'Pending'}
+                          onChange={(e) => handleStatusChange(s._id, e.target.value)}
+                          className={`text-[10px] font-black uppercase tracking-widest rounded-xl px-3 py-1.5 focus:outline-none ring-1 ring-inset ${
+                            s.status === 'Resolved' ? 'bg-green-50 text-green-700 ring-green-200' :
+                            s.status === 'Under Review' ? 'bg-yellow-50 text-yellow-700 ring-yellow-200' :
+                            'bg-slate-50 text-slate-700 ring-slate-200'
+                          }`}
+                        >
+                          <option value="Pending">Pending</option>
+                          <option value="Under Review">Under Review</option>
+                          <option value="Resolved">Resolved</option>
+                        </select>
+                      </td>
+                      <td className="px-6 py-5">
+                        <div className="flex items-center gap-2">
+                          <textarea
+                            rows={1}
+                            placeholder="Admin reply..."
+                            className="w-full text-sm p-2 bg-slate-50 border border-slate-200 rounded-xl resize-none focus:ring-2 focus:ring-indigo-500 transition-shadow"
+                            value={replyInputs[s._id] !== undefined ? replyInputs[s._id] : (s.adminReply || '')}
+                            onChange={(e) => handleReplyChange(s._id, e.target.value)}
+                          />
+                          <button
+                            onClick={() => handleSaveReply(s._id)}
+                            disabled={isSavingReply[s._id]}
+                            className="p-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors disabled:opacity-50"
+                          >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                          </button>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-right">
+                        <button
+                          onClick={() => handleDelete(s._id)}
+                          className="p-2 text-rose-500 hover:bg-rose-50 rounded-xl transition-colors"
+                        >
+                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v2m3 4h.01" /></svg>
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile Card View */}
+            <div className="lg:hidden p-4 space-y-4">
+              {suggestions
+                .filter(s =>
+                  activeTab === 'all'
+                    ? true
+                    : activeTab === 'personal'
+                      ? s.visibility === 'personal'
+                      : s.visibility !== 'personal'
+                )
+                .map((s) => (
+                <div key={s._id} className="bg-slate-50 rounded-3xl p-6 border border-slate-200 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex flex-col">
+                      <span className="text-xs font-black text-slate-400 uppercase tracking-widest">Student</span>
+                      <span className="text-sm font-bold text-slate-800">{s.name || 'Anonymous'}</span>
+                    </div>
+                    <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${s.category === 'Academics' ? 'bg-blue-100 text-blue-800' : 'bg-slate-200'}`}>
+                      {s.category}
+                    </span>
+                  </div>
+                  
+                  <div>
+                    <span className="text-xs font-black text-slate-400 uppercase tracking-widest">Message</span>
+                    <p className="text-sm text-slate-700 font-medium leading-relaxed mt-1">{s.message}</p>
+                  </div>
+
+                  <div className="flex items-center gap-4 py-2 border-t border-b border-slate-200/50">
+                    <div className="flex-1">
+                      <span className="text-xs font-black text-slate-400 uppercase tracking-widest mb-1 block">Status</span>
                       <select
                         value={s.status || 'Pending'}
                         onChange={(e) => handleStatusChange(s._id, e.target.value)}
-                        className={`text-xs font-bold rounded-xl px-3 py-1.5 focus:outline-none ring-1 ring-inset ${
-                          s.status === 'Resolved' ? 'bg-green-50 text-green-700 ring-green-200 focus:ring-green-500' :
-                          s.status === 'Under Review' ? 'bg-yellow-50 text-yellow-700 ring-yellow-200 focus:ring-yellow-500' :
-                          'bg-slate-50 text-slate-700 ring-slate-200 focus:ring-slate-500'
-                        }`}
+                        className="w-full text-xs font-black uppercase tracking-widest rounded-xl px-3 py-2 bg-white border border-slate-200"
                       >
                         <option value="Pending">Pending</option>
                         <option value="Under Review">Under Review</option>
                         <option value="Resolved">Resolved</option>
                       </select>
-                    </td>
-                    <td className="px-6 py-5">
-                      <div className="flex items-start gap-2 min-w-[240px]">
-                        <textarea
-                          rows={2}
-                          placeholder="Type a reply..."
-                          className="w-full text-sm p-2 bg-slate-50 border border-slate-200 rounded-xl resize-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow"
-                          value={replyInputs[s._id] !== undefined ? replyInputs[s._id] : (s.adminReply || '')}
-                          onChange={(e) => handleReplyChange(s._id, e.target.value)}
-                        />
-                        <button
-                          onClick={() => handleSaveReply(s._id)}
-                          disabled={isSavingReply[s._id]}
-                          className={`px-3 py-2 text-xs font-bold rounded-xl text-white shadow-sm transition-colors ${
-                            isSavingReply[s._id] ? 'bg-indigo-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'
-                          }`}
-                        >
-                          {isSavingReply[s._id] ? '...' : 'Save'}
-                        </button>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {new Date(s.createdAt).toLocaleDateString()}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <span className="text-xs font-black text-slate-400 uppercase tracking-widest">Votes</span>
+                      <span className="text-lg font-black text-indigo-600">{(s.upvotes || []).length}</span>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <span className="text-xs font-black text-slate-400 uppercase tracking-widest">Admin Reply</span>
+                    <div className="flex gap-2">
+                      <textarea
+                        rows={2}
+                        placeholder="Type reply..."
+                        className="flex-1 text-sm p-3 bg-white border border-slate-200 rounded-2xl resize-none"
+                        value={replyInputs[s._id] !== undefined ? replyInputs[s._id] : (s.adminReply || '')}
+                        onChange={(e) => handleReplyChange(s._id, e.target.value)}
+                      />
                       <button
-                        onClick={() => handleDelete(s._id)}
-                        className="text-red-600 hover:text-red-900 transition-colors"
+                        onClick={() => handleSaveReply(s._id)}
+                        disabled={isSavingReply[s._id]}
+                        className="px-4 bg-indigo-600 text-white rounded-2xl font-bold transition-all active:scale-95 disabled:opacity-50"
                       >
-                        Delete
+                        {isSavingReply[s._id] ? '...' : 'Save'}
                       </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                    </div>
+                  </div>
+
+                   <button
+                    onClick={() => handleDelete(s._id)}
+                    className="w-full py-3 text-rose-500 font-bold text-xs uppercase tracking-widest bg-rose-50 border border-rose-100 rounded-2xl active:scale-95 transition-all"
+                  >
+                    Delete Suggestion
+                  </button>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
       </div>
