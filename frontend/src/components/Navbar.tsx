@@ -116,12 +116,12 @@ const Navbar: React.FC = () => {
           </div>
         </Link>
 
-        {/* Desktop Menu */}
+        {/* Desktop Menu - Strictly Hidden on Mobile */}
         <div className="hidden lg:flex items-center gap-1">
           {navigationLinks()}
         </div>
 
-        {/* Mobile Logout (Simplified Top Bar) */}
+        {/* Mobile View - Simplified Top Bar (Logo and Logout only) */}
         <div className="flex lg:hidden items-center group">
           <button
             onClick={() => {
