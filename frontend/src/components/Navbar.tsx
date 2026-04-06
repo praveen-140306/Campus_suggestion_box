@@ -121,31 +121,22 @@ const Navbar: React.FC = () => {
           {navigationLinks()}
         </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="lg:hidden p-2 rounded-xl bg-white/5 text-slate-300 hover:text-white transition-colors"
-        >
-          {isMenuOpen ? (
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+        {/* Mobile Logout (Simplified Top Bar) */}
+        <div className="flex lg:hidden items-center group">
+          <button
+            onClick={() => {
+              localStorage.removeItem('userInfo');
+              window.location.href = '/welcome';
+            }}
+            className="p-2.5 rounded-xl bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 active:scale-95 transition-all duration-200"
+            title="Logout"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
             </svg>
-          ) : (
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          )}
-        </button>
-      </div>
-
-      {/* Mobile Drawer */}
-      {isMenuOpen && (
-        <div className="lg:hidden bg-slate-900 border-t border-white/5 animate-in slide-in-from-top duration-200">
-          <div className="container mx-auto px-4 py-4 flex flex-col gap-2">
-            {navigationLinks(true)}
-          </div>
+          </button>
         </div>
-      )}
+      </div>
     </nav>
   );
 };

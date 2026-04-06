@@ -10,16 +10,18 @@ import ProtectedRoute from './components/ProtectedRoute';
 import MySuggestions from './screens/MySuggestions';
 import ProfileScreen from './screens/ProfileScreen';
 import AllSuggestions from './screens/AllSuggestions';
+import BottomNavbar from './components/BottomNavbar';
 
 // Layout component for authenticated/main pages
 const MainLayout = () => {
     return (
         <div className="min-h-screen flex flex-col bg-slate-50">
             <Navbar />
-            <main className="flex-grow">
+            <main className="flex-grow pb-24 lg:pb-0">
                 <Outlet />
             </main>
-            <footer className="bg-white border-t border-slate-200 py-10 text-center relative z-20">
+            <BottomNavbar />
+            <footer className="hidden lg:block bg-white border-t border-slate-200 py-10 text-center relative z-20">
                 <div className="max-w-4xl mx-auto px-4">
                     <p className="text-slate-400 text-sm font-medium">
                         © {new Date().getFullYear()} <span className="text-indigo-600 font-bold">CampusBox</span>. Built for the community.
