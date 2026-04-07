@@ -1,0 +1,145 @@
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+<meta charset="utf-8">
+<title>Campus Suggestion Box - Technical Project Report</title>
+<style>
+  body {
+    font-family: 'Calibri', 'Arial', sans-serif;
+    line-height: 1.6;
+    margin: 40px;
+    color: #333;
+  }
+  h1 {
+    color: #2F5496;
+    text-align: center;
+    border-bottom: 2px solid #2F5496;
+    padding-bottom: 10px;
+  }
+  h2 {
+    color: #2F5496;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+    margin-top: 30px;
+  }
+  h3 {
+    color: #1F3864;
+  }
+  p, li {
+    font-size: 11pt;
+  }
+  .highlight {
+    background-color: #f4f4f4;
+    padding: 2px 5px;
+    border: 1px solid #ccc;
+    font-family: monospace;
+  }
+  ul {
+    margin-left: 20px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+  }
+  th, td {
+    border: 1px solid #bbb;
+    padding: 8px;
+    text-align: left;
+  }
+  th {
+    background-color: #EAEAEA;
+    font-weight: bold;
+  }
+  .footer {
+    margin-top: 50px;
+    text-align: center;
+    font-size: 9pt;
+    color: #666;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Project Report: Campus Suggestion Box</h1>
+
+<h2>1. Executive Summary</h2>
+<p>
+    The <b>Campus Suggestion Box</b> is a multi-platform application designed to streamline student feedback and administration management within educational institutions. The application allows students to report issues or give suggestions securely, while administrators can continuously monitor, approve, or reject suggestions via a dedicated portal.
+</p>
+<p>
+    The project is developed using the <b>MERN Stack</b> (MongoDB, Express.js, React.js, Node.js) supported by a <b>React Native / Expo</b> mobile environment to provide cross-platform capabilities.
+</p>
+
+<h2>2. Architecture & Tech Stack</h2>
+<p>The system is comprised of three primary components:</p>
+
+<h3>2.1. Backend API (Node.js & Express)</h3>
+<ul>
+    <li><b>Environment:</b> Node.js with Express.js routing.</li>
+    <li><b>Database:</b> MongoDB Atlas managed via Mongoose Object Data Modeling (ODM).</li>
+    <li><b>Authentication:</b> Google OAuth 2.0 integration alongside standard JWT (JSON Web Token) handling, using Passport/bcryptjs.</li>
+    <li><b>Media Storage:</b> Integrated with Cloudinary via Multer for persistent, secure image and media uploads.</li>
+    <li><b>Deployment Setup:</b> Contains serverless configuration via <code>vercel.json</code> to enable Vercel Function deployment without a traditional rigid server.</li>
+</ul>
+
+<h3>2.2. Web Frontend (React & Vite)</h3>
+<ul>
+    <li><b>Framework:</b> React.js scaffolded and bundled using Vite for rapid development.</li>
+    <li><b>Routing:</b> Handled securely via <code>react-router-dom</code> utilizing standard and protected route patterns (<code>&lt;ProtectedRoute /&gt;</code>).</li>
+    <li><b>Styling Framework:</b> Tailwind CSS extensively used for responsive UI, delivering a clean desktop and mobile web layout.</li>
+    <li><b>Pages:</b> Distinct views exist for Students (Submission, Profile, Suggestions Timeline) and Admins (Administrative Dashboard).</li>
+</ul>
+
+<h3>2.3. Mobile Application (React Native / Expo)</h3>
+<ul>
+    <li><b>Framework:</b> React Native managed via Expo for simplified iOS and Android builds.</li>
+    <li><b>Navigation:</b> Native-Stack and Bottom-Tabs from <code>@react-navigation</code> ensure a robust, mobile-native user experience.</li>
+    <li><b>Component Reusability:</b> Implements its own AuthContext avoiding dependencies on the web infrastructure and providing persistent login states using AsyncStorage.</li>
+    <li><b>Features Highlights:</b> Expo Image Picker handles file inputs, and cross-platform compatible headers enable a native feeling across iOS/Android.</li>
+</ul>
+
+<h2>3. Data Models</h2>
+<p>MongoDB consists of the following core schemas built with Mongoose:</p>
+<table>
+    <tr>
+        <th>Model Name</th>
+        <th>Purpose</th>
+        <th>Key Attributes</th>
+    </tr>
+    <tr>
+        <td><b>User</b></td>
+        <td>Stores personnel credentials and operational roles.</td>
+        <td>Name, Email, Role (Student/Admin), GoogleID, Authentication Tokens</td>
+    </tr>
+        <tr>
+        <td><b>Suggestion</b></td>
+        <td>The primary transactional data outlining feedback.</td>
+        <td>Title, Category, Description, Image URL (Cloudinary), Status (Pending, Approved, Rejected), Author</td>
+    </tr>
+</table>
+
+<h2>4. Current System Capabilities</h2>
+<ul>
+    <li><b>Google Single Sign-On (SSO):</b> Both Frontend and Backend properly handshake to authenticate users safely and swiftly contextually based on their Role.</li>
+    <li><b>Cloud Media Integrity:</b> Bypasses traditional server file system limitations by directly pushing visual attachments to Cloudinary.</li>
+    <li><b>Responsive Design:</b> Seamless experience translating from widescreen Web Dashboards down to mobile App screens.</li>
+    <li><b>CORS & Security:</b> Enforced strict Cross-Origin Resouce Sharing (CORS) rules and explicit COOP/COEP headers.</li>
+</ul>
+
+<h2>5. Repository Map & Structure</h2>
+<ul>
+    <li><code>/frontend</code> - React Vite UI Implementation.</li>
+    <li><code>/backend</code> - Core Express Application, Mongoose Schemas (<code>/models</code>), Controllers (<code>/api</code> & <code>/routes</code>), and environment connections.</li>
+    <li><code>/mobile</code> - React Native Expo Application containing parallel screens functionally tied to the central APIs.</li>
+</ul>
+
+<div class="footer">
+    Report generated automatically from the master repository.<br>
+    Date: April 2026<br>
+    Application Version: 1.0.0
+</div>
+
+</body>
+</html>

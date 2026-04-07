@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Suggestion = require('../models/Suggestion');
 const { protect, admin } = require('../middleware/authMiddleware');
+const sendEmail = require('../utils/sendEmail');
 
 const multer = require('multer');
 const path = require('path');
@@ -165,6 +166,11 @@ router.patch('/:id/status', protect, admin, async (req, res) => {
         
         if (!suggestion) {
             return res.status(404).json({ error: 'Suggestion not found' });
+        }
+        
+        // Trigger email notification to the relevant department
+        if (status === 'Under Review' || status === 'Resolved') {
+            sendEmail(suggestion).catch(err => console.error("Async email error:", err));
         }
         
         res.json(suggestion);

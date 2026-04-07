@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import {
-  View, Text, StyleSheet, FlatList, SafeAreaView,
+  View, Text, StyleSheet, FlatList,
   StatusBar, ActivityIndicator, Image,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
 import { getMySuggestions } from '../services/api';
 import { scale, verticalScale, fontScale, spacing, radius } from '../utils/responsive';
 
@@ -22,15 +24,15 @@ const MySuggestionsScreen = () => {
   useEffect(() => { fetchMine(); }, []);
 
   const statusColor = (status: string) => {
-    if (status === 'Resolved') return '#14532d';
-    if (status === 'Under Review') return '#713f12';
-    return '#1e293b';
+    if (status === 'Resolved') return '#dcfce7';
+    if (status === 'Under Review') return '#fef3c7';
+    return '#f1f5f9';
   };
 
   const statusTextColor = (status: string) => {
-    if (status === 'Resolved') return '#86efac';
-    if (status === 'Under Review') return '#fde68a';
-    return '#94a3b8';
+    if (status === 'Resolved') return '#166534';
+    if (status === 'Under Review') return '#92400e';
+    return '#475569';
   };
 
   const renderItem = ({ item: s }: { item: any }) => (
@@ -61,13 +63,13 @@ const MySuggestionsScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#0f0e2a" />
+      <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
       <View style={styles.header}>
         <Text style={styles.headerTitle}>My Suggestions</Text>
         <Text style={styles.headerSub}>{suggestions.length} suggestion{suggestions.length !== 1 ? 's' : ''} submitted</Text>
       </View>
       {loading ? (
-        <ActivityIndicator color="#818cf8" style={{ marginTop: verticalScale(40) }} size="large" />
+        <ActivityIndicator color="#4f46e5" style={{ marginTop: verticalScale(40) }} size="large" />
       ) : (
         <FlatList
           data={suggestions}
@@ -79,7 +81,7 @@ const MySuggestionsScreen = () => {
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
-              <Text style={styles.emptyEmoji}>📝</Text>
+              <Ionicons name="document-text-outline" size={scale(48)} color="#94a3b8" />
               <Text style={styles.emptyTitle}>No suggestions yet</Text>
               <Text style={styles.emptySubtitle}>Submit your first suggestion from the Home tab!</Text>
             </View>
@@ -91,32 +93,31 @@ const MySuggestionsScreen = () => {
 };
 
 const categoryColor = (cat: string) => {
-  const map: any = { Academics: '#1e3a5f', Facilities: '#14532d', Events: '#3b0764', Others: '#1e293b' };
-  return map[cat] || '#1e293b';
+  const map: any = { Academics: '#ef4444', Facilities: '#10b981', Events: '#8b5cf6', Others: '#64748b' };
+  return map[cat] || '#64748b';
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#0f0e2a' },
+  container: { flex: 1, backgroundColor: '#ffffff' },
   header: { paddingHorizontal: spacing.lg, paddingTop: spacing.md, paddingBottom: spacing.sm },
-  headerTitle: { fontSize: fontScale(20), fontWeight: '800', color: '#ffffff' },
-  headerSub: { fontSize: fontScale(12), color: '#64748b', marginTop: scale(2) },
+  headerTitle: { fontSize: fontScale(22), fontWeight: '800', color: '#0f172a', letterSpacing: -0.5 },
+  headerSub: { fontSize: fontScale(13), color: '#64748b', marginTop: scale(2) },
   list: { padding: spacing.md, gap: scale(12), paddingBottom: spacing.xl },
-  card: { backgroundColor: '#1e1b4b', borderRadius: radius.lg, padding: scale(16), gap: scale(10) },
+  card: { backgroundColor: '#ffffff', borderRadius: radius.lg, padding: scale(16), gap: scale(10), borderWidth: 1, borderColor: '#e2e8f0' },
   cardTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   statusBadge: { paddingHorizontal: scale(10), paddingVertical: scale(4), borderRadius: radius.full },
   statusText: { fontSize: fontScale(11), fontWeight: '700' },
-  date: { color: '#475569', fontSize: fontScale(11) },
+  date: { color: '#64748b', fontSize: fontScale(11) },
   catBadge: { alignSelf: 'flex-start', paddingHorizontal: scale(10), paddingVertical: scale(4), borderRadius: radius.full },
   catText: { color: '#ffffff', fontSize: fontScale(11), fontWeight: '700' },
-  msg: { color: '#e2e8f0', fontSize: fontScale(14), lineHeight: fontScale(21) },
-  img: { width: '100%', height: verticalScale(160), borderRadius: radius.md },
-  replyBox: { backgroundColor: '#172554', borderRadius: radius.md, padding: scale(12) },
-  replyLabel: { color: '#93c5fd', fontSize: fontScale(10), fontWeight: '700', textTransform: 'uppercase', marginBottom: scale(4) },
-  replyText: { color: '#bfdbfe', fontSize: fontScale(12) },
+  msg: { color: '#334155', fontSize: fontScale(14), lineHeight: fontScale(21) },
+  img: { width: '100%', height: verticalScale(160), borderRadius: radius.md, marginTop: scale(4) },
+  replyBox: { backgroundColor: '#f0fdf4', borderRadius: radius.md, padding: scale(12), borderWidth: 1, borderColor: '#bbf7d0' },
+  replyLabel: { color: '#166534', fontSize: fontScale(10), fontWeight: '700', textTransform: 'uppercase', marginBottom: scale(4) },
+  replyText: { color: '#15803d', fontSize: fontScale(12) },
   emptyContainer: { alignItems: 'center', marginTop: verticalScale(80), gap: scale(8) },
-  emptyEmoji: { fontSize: scale(48) },
-  emptyTitle: { color: '#e2e8f0', fontSize: fontScale(17), fontWeight: '700' },
-  emptySubtitle: { color: '#475569', fontSize: fontScale(13), textAlign: 'center', paddingHorizontal: spacing.xl },
+  emptyTitle: { color: '#0f172a', fontSize: fontScale(17), fontWeight: '700' },
+  emptySubtitle: { color: '#64748b', fontSize: fontScale(13), textAlign: 'center', paddingHorizontal: spacing.xl },
 });
 
 export default MySuggestionsScreen;

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity, StyleSheet,
-  ScrollView, SafeAreaView, StatusBar, ActivityIndicator,
+  ScrollView, StatusBar, ActivityIndicator,
   Alert, KeyboardAvoidingView, Platform,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 import { useAuth } from '../context/AuthContext';
@@ -25,6 +27,8 @@ const LoginScreen = ({ navigation, route }: any) => {
 
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
     clientId: GOOGLE_CLIENT_ID,
+    webClientId: GOOGLE_CLIENT_ID,
+    androidClientId: '688607881387-pqcjieq87cqhhdjtuq2710ifnpb96bhn.apps.googleusercontent.com',
   });
 
   React.useEffect(() => {
@@ -70,7 +74,7 @@ const LoginScreen = ({ navigation, route }: any) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#0f0e2a" />
+      <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -83,10 +87,12 @@ const LoginScreen = ({ navigation, route }: any) => {
         >
           <View style={styles.topRow}>
             <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-              <Text style={styles.backText}>← Back</Text>
+              <Ionicons name="arrow-back" size={scale(18)} color="#0f172a" style={styles.backIcon} />
+              <Text style={styles.backText}>Back</Text>
             </TouchableOpacity>
             <View style={styles.roleTag}>
-              <Text style={styles.roleTagText}>{role === 'admin' ? '🛡️ Admin' : '📚 Student'}</Text>
+              <Ionicons name={role === 'admin' ? 'shield-checkmark' : 'book'} size={scale(14)} color="#4f46e5" />
+              <Text style={styles.roleTagText}>{role === 'admin' ? 'Admin' : 'Student'}</Text>
             </View>
           </View>
 
@@ -168,27 +174,28 @@ const LoginScreen = ({ navigation, route }: any) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#0f0e2a' },
+  container: { flex: 1, backgroundColor: '#ffffff' },
   scroll: { flexGrow: 1, padding: spacing.lg, paddingTop: spacing.md },
   topRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: spacing.xl },
-  backBtn: { padding: spacing.xs },
-  backText: { color: '#818cf8', fontSize: fontScale(14), fontWeight: '600' },
-  roleTag: { backgroundColor: '#1e1b4b', paddingHorizontal: scale(14), paddingVertical: scale(6), borderRadius: radius.full },
-  roleTagText: { color: '#818cf8', fontSize: fontScale(12), fontWeight: '600' },
-  title: { fontSize: fontScale(28), fontWeight: '800', color: '#ffffff', marginBottom: scale(6) },
+  backBtn: { padding: spacing.xs, flexDirection: 'row', alignItems: 'center' },
+  backIcon: { marginRight: scale(4) },
+  backText: { color: '#0f172a', fontSize: fontScale(14), fontWeight: '600' },
+  roleTag: { backgroundColor: '#f1f5f9', paddingHorizontal: scale(12), paddingVertical: scale(6), borderRadius: radius.full, flexDirection: 'row', alignItems: 'center', gap: scale(6) },
+  roleTagText: { color: '#4f46e5', fontSize: fontScale(12), fontWeight: '600' },
+  title: { fontSize: fontScale(28), fontWeight: '800', color: '#0f172a', marginBottom: scale(6), letterSpacing: -0.5 },
   subtitle: { fontSize: fontScale(14), color: '#64748b', marginBottom: spacing.xl },
   form: { gap: spacing.md },
   inputGroup: { gap: scale(6) },
-  label: { color: '#94a3b8', fontSize: fontScale(12), fontWeight: '600', letterSpacing: 0.3 },
+  label: { color: '#475569', fontSize: fontScale(12), fontWeight: '600', letterSpacing: 0.3 },
   input: {
-    backgroundColor: '#1e1b4b',
+    backgroundColor: '#f8fafc',
     borderRadius: radius.md,
     paddingHorizontal: scale(16),
     paddingVertical: verticalScale(14),
-    color: '#ffffff',
+    color: '#0f172a',
     fontSize: fontScale(15),
     borderWidth: 1,
-    borderColor: '#2d2b5e',
+    borderColor: '#e2e8f0',
     minHeight: verticalScale(52),
   },
   primaryBtn: {
@@ -199,11 +206,16 @@ const styles = StyleSheet.create({
     marginTop: scale(4),
     minHeight: verticalScale(54),
     justifyContent: 'center',
+    shadowColor: '#4f46e5',
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 4,
   },
   primaryBtnText: { color: '#ffffff', fontSize: fontScale(16), fontWeight: '700' },
   divider: { flexDirection: 'row', alignItems: 'center', gap: scale(10) },
-  dividerLine: { flex: 1, height: 1, backgroundColor: '#1e293b' },
-  dividerText: { color: '#475569', fontSize: fontScale(12) },
+  dividerLine: { flex: 1, height: 1, backgroundColor: '#e2e8f0' },
+  dividerText: { color: '#94a3b8', fontSize: fontScale(12) },
   googleBtn: {
     backgroundColor: '#ffffff',
     borderRadius: radius.md,
@@ -213,12 +225,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: scale(10),
     minHeight: verticalScale(52),
+    borderWidth: 1,
+    borderColor: '#cbd5e1',
   },
   googleIcon: { fontSize: fontScale(18), fontWeight: '900', color: '#4285F4' },
-  googleBtnText: { color: '#1e1b4b', fontSize: fontScale(15), fontWeight: '700' },
+  googleBtnText: { color: '#0f172a', fontSize: fontScale(15), fontWeight: '700' },
   switchRow: { alignItems: 'center', paddingVertical: spacing.sm },
   switchText: { color: '#64748b', fontSize: fontScale(13) },
-  switchLink: { color: '#818cf8', fontWeight: '700' },
+  switchLink: { color: '#4f46e5', fontWeight: '700' },
 });
 
 export default LoginScreen;

@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../context/AuthContext';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import LoginScreen from '../screens/LoginScreen';
@@ -15,30 +16,43 @@ const Tab = createBottomTabNavigator();
 
 const StudentTabs = () => (
   <Tab.Navigator
-    screenOptions={{
+    screenOptions={({ route }) => ({
       headerShown: false,
-      tabBarStyle: { backgroundColor: '#1e1b4b', borderTopColor: '#3730a3' },
-      tabBarActiveTintColor: '#818cf8',
-      tabBarInactiveTintColor: '#6b7280',
-    }}
+      tabBarStyle: { backgroundColor: '#ffffff', borderTopColor: '#e2e8f0', elevation: 0, shadowOpacity: 0 },
+      tabBarActiveTintColor: '#4f46e5',
+      tabBarInactiveTintColor: '#94a3b8',
+      tabBarIcon: ({ color, size }) => {
+        let iconName: any = 'home';
+        if (route.name === 'Home') iconName = 'home';
+        else if (route.name === 'MySuggestions') iconName = 'list';
+        else if (route.name === 'Profile') iconName = 'person';
+        return <Ionicons name={iconName} size={size} color={color} />;
+      },
+    })}
   >
-    <Tab.Screen name="Home" component={HomeScreen} options={{ tabBarLabel: '🏠 Home' }} />
-    <Tab.Screen name="MySuggestions" component={MySuggestionsScreen} options={{ tabBarLabel: '📋 Mine' }} />
-    <Tab.Screen name="Profile" component={ProfileScreen} options={{ tabBarLabel: '👤 Profile' }} />
+    <Tab.Screen name="Home" component={HomeScreen} options={{ tabBarLabel: 'Home' }} />
+    <Tab.Screen name="MySuggestions" component={MySuggestionsScreen} options={{ tabBarLabel: 'Mine' }} />
+    <Tab.Screen name="Profile" component={ProfileScreen} options={{ tabBarLabel: 'Profile' }} />
   </Tab.Navigator>
 );
 
 const AdminTabs = () => (
   <Tab.Navigator
-    screenOptions={{
+    screenOptions={({ route }) => ({
       headerShown: false,
-      tabBarStyle: { backgroundColor: '#1e1b4b', borderTopColor: '#3730a3' },
-      tabBarActiveTintColor: '#818cf8',
-      tabBarInactiveTintColor: '#6b7280',
-    }}
+      tabBarStyle: { backgroundColor: '#ffffff', borderTopColor: '#e2e8f0', elevation: 0, shadowOpacity: 0 },
+      tabBarActiveTintColor: '#4f46e5',
+      tabBarInactiveTintColor: '#94a3b8',
+      tabBarIcon: ({ color, size }) => {
+        let iconName: any = 'shield-checkmark';
+        if (route.name === 'Admin') iconName = 'shield-checkmark';
+        else if (route.name === 'Profile') iconName = 'person';
+        return <Ionicons name={iconName} size={size} color={color} />;
+      },
+    })}
   >
-    <Tab.Screen name="Admin" component={AdminScreen} options={{ tabBarLabel: '🛡️ Dashboard' }} />
-    <Tab.Screen name="Profile" component={ProfileScreen} options={{ tabBarLabel: '👤 Profile' }} />
+    <Tab.Screen name="Admin" component={AdminScreen} options={{ tabBarLabel: 'Dashboard' }} />
+    <Tab.Screen name="Profile" component={ProfileScreen} options={{ tabBarLabel: 'Profile' }} />
   </Tab.Navigator>
 );
 
@@ -48,7 +62,7 @@ const AppNavigator = () => {
   if (loading) {
     return (
       <View style={styles.loader}>
-        <ActivityIndicator size="large" color="#818cf8" />
+        <ActivityIndicator size="large" color="#4f46e5" />
       </View>
     );
   }
@@ -72,7 +86,7 @@ const AppNavigator = () => {
 };
 
 const styles = StyleSheet.create({
-  loader: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#0f0e2a' },
+  loader: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#ffffff' },
 });
 
 export default AppNavigator;
