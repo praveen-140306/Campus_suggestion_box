@@ -169,8 +169,9 @@ router.patch('/:id/status', protect, admin, async (req, res) => {
         }
         
         // Trigger email notification to the relevant department
+        // We MUST await it so Vercel serverless functions don't kill the process before it sends
         if (status === 'Under Review' || status === 'Resolved') {
-            sendEmail(suggestion).catch(err => console.error("Async email error:", err));
+            await sendEmail(suggestion).catch(err => console.error("Async email error:", err));
         }
         
         res.json(suggestion);
