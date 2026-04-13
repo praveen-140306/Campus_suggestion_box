@@ -45,10 +45,16 @@ const sendEmail = async (suggestion) => {
                 toEmail = process.env.GENERAL_EMAIL || 'general@campus.edu';
         }
 
+        const ccEmails = [];
+        if (suggestion.user && suggestion.user.email) {
+            ccEmails.push(suggestion.user.email);
+        }
+
         // Email options
         const mailOptions = {
             from: `"Campus Suggestion Box" <${process.env.EMAIL_SERVICE_USER || 'noreply@campus.edu'}>`,
             to: toEmail,
+            cc: ccEmails,
             subject: `Action Taken: Suggestion Update in ${suggestion.category}`,
             html: `
                 <h3>Suggestion Needs Action / Has Update</h3>

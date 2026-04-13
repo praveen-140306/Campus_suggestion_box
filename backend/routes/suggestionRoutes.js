@@ -162,7 +162,7 @@ router.patch('/:id/status', protect, admin, async (req, res) => {
             req.params.id,
             { status },
             { new: true }
-        );
+        ).populate('user', 'email name');
         
         if (!suggestion) {
             return res.status(404).json({ error: 'Suggestion not found' });
@@ -189,10 +189,14 @@ router.patch('/:id/reply', protect, admin, async (req, res) => {
             req.params.id,
             { adminReply },
             { new: true }
-        );
+        ).populate('user', 'email name');
         
         if (!suggestion) {
             return res.status(404).json({ error: 'Suggestion not found' });
+        }
+        
+        if (adminReply) {
+            await sendEmail(suggestion).catch(err => console.error("Async email error:", err));
         }
         
         res.json(suggestion);
