@@ -21,7 +21,9 @@ const sendEmail = async (suggestion) => {
         } else {
             // Setup real transporter (e.g., Gmail)
             transporter = nodemailer.createTransport({
-                service: 'gmail', // or use host and port for SMTP
+                host: 'smtp.gmail.com',
+                port: 465,
+                secure: true,
                 auth: {
                     user: process.env.EMAIL_SERVICE_USER,
                     pass: process.env.EMAIL_SERVICE_PASS,
