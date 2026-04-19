@@ -75,7 +75,6 @@ const MySuggestions: React.FC = () => {
             <p className="mt-1 text-gray-500">You haven't submitted any feedback to the campus box.</p>
           </div>
         ) : (
-        ) : (
           <div className="divide-y divide-slate-100">
             {suggestions.map((suggestion) => (
               <div key={suggestion._id} className="p-6 sm:p-8 transition-all hover:bg-slate-50 flex flex-col gap-5">
